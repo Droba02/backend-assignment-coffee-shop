@@ -5,12 +5,4 @@ import { BarmenService } from "./barmen.service";
    providers:[BarmenService],
     exports:[BarmenService]
 })
-export class BarmenModule{
-
-    constructor( public baristas: Barista[]=[], public orders = [], public minInterval:number = 0){}
-
-
-    addBarista(barista: Barista){
-        this.baristas.push(barista);
-    }
-}
+export class BarmenModule{}
