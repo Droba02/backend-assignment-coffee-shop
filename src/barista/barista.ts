@@ -1,10 +1,7 @@
-import { Module } from "@nestjs/common";
-
-@Module({})
-export class Barista{
+class Barista{
 
 
-    constructor(public isAvailable = true, public coffeeAmount = 300,public timeBusy = 0){}
+    constructor(public isAvailable = true, public coffeeAmount = 300,public timeBusy = 0, public id: number){}
 
     makeOrder(amount:number, time:number): void{
         this.coffeeAmount -= amount

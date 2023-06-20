@@ -1,14 +1,12 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Coffee } from "./coffee.entity";
+import { CoffeeSerivce } from "./coffee.service";
 
 @Module({
     imports: [TypeOrmModule.forFeature([Coffee])],
-    providers: [],
+    providers: [CoffeeSerivce],
     controllers: [],
+    exports: [CoffeeSerivce]
   })
-export class CoffeeModule{
-    constructor(public id: number,public name:string, public amount:number, public time: number ){}
-
-    
-}
+export class CoffeeModule{}

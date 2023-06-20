@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { type } from 'os';
 import { Coffee } from './coffee/coffee.entity';
 
 @Module({
@@ -13,7 +12,8 @@ import { Coffee } from './coffee/coffee.entity';
       username: 'root',
       password: 'root',
       database: 'test',
-      entities: [Coffee]
+      entities: [Coffee],
+      synchronize: true
 })],
   controllers: [AppController],
   providers: [AppService],
