@@ -12,8 +12,9 @@ export class Coffee {
   amount: number;
 
   @Column()
+  price: number;
+  
+  @Column()
   time: number;
 
-  @Column()
-  price: number;
 }
