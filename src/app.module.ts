@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { type } from 'os';
+import { Coffee } from './coffee/coffee.entity';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -12,7 +13,7 @@ import { type } from 'os';
       username: 'root',
       password: 'root',
       database: 'test',
-      entities: []
+      entities: [Coffee]
 })],
   controllers: [AppController],
   providers: [AppService],
