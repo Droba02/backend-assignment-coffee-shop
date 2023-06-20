@@ -24,7 +24,7 @@ export class OrderService{
             )
         })
 
-        this.barmenService.tableOrder(orderObj);
+       return this.barmenService.tableOrder(orderObj);
     }
 
     makeOrderToGo(ids:  number[]){
@@ -43,6 +43,6 @@ export class OrderService{
             )
         })
 
-        this.barmenService.toGoOrder(orderObj);
+        return this.barmenService.toGoOrder(orderObj);
     }
 }

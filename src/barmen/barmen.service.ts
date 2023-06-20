@@ -33,7 +33,7 @@ export class BarmenService{
     }
 
     getMinTime(){
-        let minTime = Number.MAX_VALUE;
+        let minTime = 15000000;
         this.baristas.forEach(barista => {
             if(barista.timeBusy < minTime){
                 minTime = barista.timeBusy;
@@ -58,7 +58,7 @@ export class BarmenService{
             }
         }, this.getMinTime())
 
-        return "Order accepted!"
+        return 1
     }
 
     toGoOrder(order: {amount: number, time : number}){
@@ -67,7 +67,7 @@ export class BarmenService{
 
             if(this.orders.length < 5) this.orders.push(order);
             else{
-                return "Order denied!"
+                 return -1;
             }
         }
 
@@ -78,7 +78,7 @@ export class BarmenService{
             }
         }, this.getMinTime())
 
-        return "Order accepted"
+        return 1
     }
 
 

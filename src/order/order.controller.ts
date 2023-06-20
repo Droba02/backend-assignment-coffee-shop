@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Logger, Controller, Post } from "@nestjs/common";
 import { OrderService } from "./order.service";
 
 
@@ -6,16 +6,25 @@ import { OrderService } from "./order.service";
 export class OrderController{
     constructor(private orderService: OrderService){}
 
-    @Post('table')
+    @Post('/table')
     makeTableOrder(@Body() body){
         const obj = JSON.parse(body)
-        this.orderService.makeOrderTable(obj)
+        let res = this.orderService.makeOrderTable(obj.ids)
+        if(res == -1){
+            return "no"
+        }else if(res == 1){
+            return "yes"
+        }
     }
 
-    @Post('toGo')
+    @Post('/togo')
     makeToGoOrder(@Body() body){
-        const obj = JSON.parse(body)
-        this.orderService.makeOrderToGo(obj)
+        let res = this.orderService.makeOrderToGo(body.ids)
+        if(res == -1){
+            return "no"
+        }else if(res == 1){
+            return "yes"
+        }
     }
    
 }
