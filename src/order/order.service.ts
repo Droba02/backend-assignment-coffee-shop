@@ -9,7 +9,7 @@ export class OrderService{
     constructor(private coffeService : CoffeeSerivce, private barmenService : BarmenService){}
 
     makeOrderTable(ids:  number[]){
-        const order = {
+        const orderObj = {
             amount : 0,
             time : 0
         }
@@ -18,12 +18,31 @@ export class OrderService{
         
             this.coffeService.findOne(id).then(
                 (res) =>{
-                    order.amount += res.amount
-                    order.time += res.time
+                    orderObj.amount += res.amount
+                    orderObj.time += res.time
                 }
             )
         })
 
-        this.barmenService.order(order);
+        this.barmenService.tableOrder(orderObj);
+    }
+
+    makeOrderToGo(ids:  number[]){
+        const orderObj = {
+            amount : 0,
+            time : 0
+        }
+
+        ids.forEach((id) => {
+        
+            this.coffeService.findOne(id).then(
+                (res) =>{
+                    orderObj.amount += res.amount
+                    orderObj.time += res.time
+                }
+            )
+        })
+
+        this.barmenService.toGoOrder(orderObj);
     }
 }

@@ -15,7 +15,7 @@ class Barista{
     }
 
     refillCoffee(){
-        this.timeBusy = 2 * 60 *1000;
+        this.timeBusy = 2 * 60*1000;
         this.coffeeAmount = 300;
         this.isAvailable = false;
 

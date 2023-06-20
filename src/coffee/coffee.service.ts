@@ -12,8 +12,8 @@ export class CoffeeSerivce {
 
 
 
-    async findOne(id: number): Promise<Coffee | null> {
-        const coffee = await this.coffeeRepository.findOneBy({ id });
+    findOne(id: number): Promise<Coffee | null> {
+        const coffee =  this.coffeeRepository.findOneBy({ id });
         
         return coffee;
     }
