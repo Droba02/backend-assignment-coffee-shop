@@ -8,7 +8,6 @@ export class OrderController{
 
     @Post('/table')
     makeTableOrder(@Body() body){
-        Logger.log(body.ids)
         this.orderService.makeOrderTable(body.ids)
         return "Order sent!"
         

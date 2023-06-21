@@ -6,8 +6,6 @@ export class BarmenService{
 
     public baristas=[new Barista(1), new Barista(2), new Barista(3)]
     public orders = []
-    public minInterval:number = 0
-
 
     addBarista(barista: Barista){
         this.baristas.push(barista);
@@ -53,17 +51,10 @@ export class BarmenService{
             Logger.log("No baristas available, putting in que")
         }
 
-        setTimeout(() =>{
-            if(this.orders.length != 0){
-                Logger.log("Barista became available, giving him the order")
-                if(this.getBarista(this.orders[0])){
-                    this.orders.shift()
-                }else{
-                    Logger.log("still waiting!")
-                }
-            }
-        }, this.getMinTime())
+        let minTime = this.getMinTime();
+        this.checkForAvailable(minTime)
 
+        
     }
 
     toGoOrder(order: {amount: number, time : number}){
@@ -73,22 +64,31 @@ export class BarmenService{
             if(this.orders.length < 5) {
                 Logger.log("No baristas available, putting in que")
                 this.orders.push(order);
+            }else{
+                Logger.log("Not serving to go orders currently")
             }
         }
-
-        setTimeout(() =>{
-            if(this.orders.length != 0){
-                Logger.log("Barista became available, giving him the order")
-                if(this.getBarista(this.orders[0])){
-                    this.orders.shift()
-                }else{
-                    Logger.log("still waiting!")
-                }
-            }
-        }, this.getMinTime())
+        let minTime = this.getMinTime();
+        this.checkForAvailable(minTime)
 
     }
 
+    checkForAvailable(minTime : number){
+        setTimeout(() =>{
+            if(this.orders.length != 0){
+                if(this.getBarista(this.orders[0])){
+                    Logger.log("Barista became available, giving him the order")
+                    this.orders.shift()
+                    return;  
+                }else{
+                    Logger.log("still waiting!")
+                    let minTime = this.getMinTime();
+                    this.checkForAvailable(minTime);
+                }
+            }
+        }, minTime)
+
+    }
 
 }
 

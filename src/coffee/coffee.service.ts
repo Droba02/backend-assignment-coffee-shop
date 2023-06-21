@@ -10,8 +10,9 @@ export class CoffeeSerivce {
     constructor(@InjectRepository(Coffee)
     private coffeeRepository: Repository<Coffee>) { }
 
-    async findCoffees(ids: number[]): Promise<Coffee[] | null> {
-      let coffees = null
+
+    async findCoffees(ids: number[]): Promise<Coffee[] | []> {
+      let coffees = [];
       for(const id of ids){
         let coffee = await this.coffeeRepository.findOneBy({ id })
         coffees.push(coffee);
