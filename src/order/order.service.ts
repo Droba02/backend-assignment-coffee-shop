@@ -26,7 +26,7 @@ export class OrderService {
         }
 
         Logger.log("Order recieved by barmen!");
-        this.barmenService.tableOrder(orderObj);
+        this.barmenService.sendTableOrder(orderObj);
     }
 
    /*async makeOrderToGo(ids: string[]) {

@@ -7,6 +7,7 @@ import { CoffeeModule } from './coffee/coffee.module';
 import { BarmenModule } from './barmen/barmen.module';
 import { OrderModule } from './order/order.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -21,7 +22,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 }),CoffeeModule,BarmenModule,OrderModule, ClientsModule.register([
   {name : 'BARISTA',
   transport: Transport.TCP}
-])],
+]), EventEmitterModule.forRoot()],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,6 +1,9 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { MakeOrderEvent } from "./make-order.event";
+import { OnEvent } from "@nestjs/event-emitter";
+import { SendHandle } from "child_process";
+import { SendResponseEvent } from "./send-response.event";
 
 @Injectable()
 export class BarmenService {
@@ -11,96 +14,27 @@ export class BarmenService {
 
     public orders = []
 
-    
 
-    tableOrder(order: { amount: number, time: number, orderNumber: number }) {
+
+    sendTableOrder(order: { amount: number, time: number, orderNumber: number }) {
 
         this.orders.push(order);
-        Logger.log('Barista recieved order!')
-
-        this.barista.emit('make-order', new MakeOrderEvent(order))
-        this.orders.shift()
-
-
-
-
-
-        /*for (let i = 0; i < this.baristas.length; i++) {
-            let barista = this.baristas[i];
-            if (barista.isAvailable) {
-                if (barista.coffeeAmount < order.amount) {
-                    barista.refillCoffee()
-
-                    continue
-                }
-
-                barista.makeOrder(order.amount, order.time)
-
-                return true
-            }
-        }
-
-        return false*/
+        this.barista.emit('make-order', new MakeOrderEvent(this.orders[0]))
     }
 
-    /* getMinTime(){
-          let minTime = this.baristas[0].timeBusy;
-          this.baristas.forEach(barista => {
-              if(barista.timeBusy < minTime){
-                  minTime = barista.timeBusy;
-              }
-          })
-  
-          return minTime;
-      }
-  
-      tableOrder(order: {amount: number, time : number}){
-  
-          let res = this.getBarista(order);
-  
-          if(!res){
-              this.orders.push(order);
-              Logger.log("No baristas available, putting in que")
-          }
-  
-          let minTime = this.getMinTime();
-          this.checkForAvailable(minTime)
-  
-          
-      }
-  
-      toGoOrder(order: {amount: number, time : number}){
-          let res = this.getBarista(order);
-          if(!res){
-  
-              if(this.orders.length < 5) {
-                  Logger.log("No baristas available, putting in que")
-                  this.orders.push(order);
-              }else{
-                  Logger.log("Not serving to go orders currently")
-              }
-          }
-          let minTime = this.getMinTime();
-          this.checkForAvailable(minTime)
-  
-      }
-  
-      checkForAvailable(minTime : number){
-          setTimeout(() =>{
-              if(this.orders.length != 0){
-                  if(this.getBarista(this.orders[0])){
-                      Logger.log("Barista became available, giving him the order")
-                      this.orders.shift()
-                      return;  
-                  }else{
-                      Logger.log("still waiting!")
-                      let minTime = this.getMinTime();
-                      this.checkForAvailable(minTime);
-                  }
-              }
-          }, minTime)
-  
-      }
-  */
+
+    @OnEvent('recieve-response')
+    handleResponse(data: SendResponseEvent) {
+        if (data.succesful) {
+            Logger.log('Barista recieved order!')
+            this.orders.shift()
+        }else{
+            Logger.log(`Barista is currently busy. Sending hem the order agai in ${this.orders[0].time} seconds`)
+            setTimeout(()=>{
+                this.barista.emit('make-order', new MakeOrderEvent(this.orders[0]))
+            }, this.orders[0].time*1000)
+        }
+    }
+
 }
 
