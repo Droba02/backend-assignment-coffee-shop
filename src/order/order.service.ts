@@ -7,11 +7,13 @@ import { CoffeeSerivce } from "src/coffee/coffee.service";
 @Injectable()
 export class OrderService {
     constructor(private coffeService: CoffeeSerivce, private barmenService: BarmenService) { }
-
+    public orderNumber = 0;
    async makeOrderTable(ids: string[]) {
+        this.orderNumber ++;
         let orderObj = {
             "amount": 0,
-            "time": 0
+            "time": 0,
+            "orderNumber" : this.orderNumber
         }
         
         let convertedIds = ids.map((id) => Number(id))
@@ -23,11 +25,11 @@ export class OrderService {
             orderObj.time += coffee.time
         }
 
-
-        return this.barmenService.tableOrder(orderObj);
+        Logger.log("Order recieved by barmen!");
+        this.barmenService.tableOrder(orderObj);
     }
 
-   async makeOrderToGo(ids: string[]) {
+   /*async makeOrderToGo(ids: string[]) {
         let orderObj = {
             "amount": 0,
             "time": 0
@@ -43,5 +45,5 @@ export class OrderService {
         }
 
         return this.barmenService.toGoOrder(orderObj);
-    }
+    }*/
 }

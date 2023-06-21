@@ -13,10 +13,11 @@ export class OrderController{
         
     }
 
-    @Post('/togo')
+   /* @Post('/togo')
     makeToGoOrder(@Body() body){
         let res = this.orderService.makeOrderToGo(body.ids)
         return "Order sent!"
         }
-    }
+    */
    
+}
