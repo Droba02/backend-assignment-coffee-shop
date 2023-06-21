@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsUtils, FindOptionsWhere, Repository } from 'typeorm';
 import { Coffee } from './coffee.entity';
 
 
@@ -10,22 +10,15 @@ export class CoffeeSerivce {
     constructor(@InjectRepository(Coffee)
     private coffeeRepository: Repository<Coffee>) { }
 
+    async findCoffees(ids: number[]): Promise<Coffee[] | null> {
+      let coffees = null
+      for(const id of ids){
+        let coffee = await this.coffeeRepository.findOneBy({ id })
+        coffees.push(coffee);
+      }   
 
-
-    findOne(id: number): Promise<Coffee | null> {
-        const coffee =  this.coffeeRepository.findOneBy({ id });
-        
-        return coffee;
+      return coffees;
     }
 
-    findAll(): Promise<Coffee[]> {
-        return this.coffeeRepository.find();
-      }
-
-      async remove(id: number): Promise<void> {
-        await this.coffeeRepository.delete(id);
-
-      }
-
-    
+  
 }

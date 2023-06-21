@@ -1,9 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
+import { Barista } from "src/barista/barista";
 
 @Injectable()
 export class BarmenService{
 
-    public baristas: Barista[]=[]
+    public baristas=[new Barista(1), new Barista(2), new Barista(3)]
     public orders = []
     public minInterval:number = 0
 
@@ -32,8 +33,8 @@ export class BarmenService{
         return false
     }
 
-    getMinTime(){
-        let minTime = 15000000;
+   getMinTime(){
+        let minTime = this.baristas[0].timeBusy;
         this.baristas.forEach(barista => {
             if(barista.timeBusy < minTime){
                 minTime = barista.timeBusy;
@@ -49,36 +50,43 @@ export class BarmenService{
 
         if(!res){
             this.orders.push(order);
+            Logger.log("No baristas available, putting in que")
         }
 
-        setInterval(() =>{
+        setTimeout(() =>{
             if(this.orders.length != 0){
-                this.getBarista(this.orders[0])
-                this.orders.shift
+                Logger.log("Barista became available, giving him the order")
+                if(this.getBarista(this.orders[0])){
+                    this.orders.shift()
+                }else{
+                    Logger.log("still waiting!")
+                }
             }
         }, this.getMinTime())
 
-        return 1
     }
 
     toGoOrder(order: {amount: number, time : number}){
         let res = this.getBarista(order);
         if(!res){
 
-            if(this.orders.length < 5) this.orders.push(order);
-            else{
-                 return -1;
+            if(this.orders.length < 5) {
+                Logger.log("No baristas available, putting in que")
+                this.orders.push(order);
             }
         }
 
-        setInterval(() =>{
+        setTimeout(() =>{
             if(this.orders.length != 0){
-                this.getBarista(this.orders[0])
-                this.orders.shift
+                Logger.log("Barista became available, giving him the order")
+                if(this.getBarista(this.orders[0])){
+                    this.orders.shift()
+                }else{
+                    Logger.log("still waiting!")
+                }
             }
         }, this.getMinTime())
 
-        return 1
     }
 
 

@@ -1,47 +1,46 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { BarmenService } from "src/barmen/barmen.service";
 import { CoffeeSerivce } from "src/coffee/coffee.service";
 
 
 
 @Injectable()
-export class OrderService{
-    constructor(private coffeService : CoffeeSerivce, private barmenService : BarmenService){}
+export class OrderService {
+    constructor(private coffeService: CoffeeSerivce, private barmenService: BarmenService) { }
 
-    makeOrderTable(ids:  number[]){
-        const orderObj = {
-            amount : 0,
-            time : 0
+   async makeOrderTable(ids: string[]) {
+        let orderObj = {
+            "amount": 0,
+            "time": 0
+        }
+        
+        let convertedIds = ids.map((id) => Number(id))
+
+        let coffees = await this.coffeService.findCoffees(convertedIds)
+
+        for(let coffee of coffees){
+            orderObj.amount += coffee.amount;
+            orderObj.time += coffee.time
         }
 
-        ids.forEach((id) => {
-        
-            this.coffeService.findOne(id).then(
-                (res) =>{
-                    orderObj.amount += res.amount
-                    orderObj.time += res.time
-                }
-            )
-        })
 
-       return this.barmenService.tableOrder(orderObj);
+        return this.barmenService.tableOrder(orderObj);
     }
 
-    makeOrderToGo(ids:  number[]){
-        const orderObj = {
-            amount : 0,
-            time : 0
+   async makeOrderToGo(ids: string[]) {
+        let orderObj = {
+            "amount": 0,
+            "time": 0
         }
-
-        ids.forEach((id) => {
         
-            this.coffeService.findOne(id).then(
-                (res) =>{
-                    orderObj.amount += res.amount
-                    orderObj.time += res.time
-                }
-            )
-        })
+        let convertedIds = ids.map((id) => Number(id))
+
+        let coffees = await this.coffeService.findCoffees(convertedIds)
+
+        for(let coffee of coffees){
+            orderObj.amount += coffee.amount;
+            orderObj.time += coffee.time
+        }
 
         return this.barmenService.toGoOrder(orderObj);
     }

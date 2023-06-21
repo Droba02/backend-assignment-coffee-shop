@@ -8,23 +8,16 @@ export class OrderController{
 
     @Post('/table')
     makeTableOrder(@Body() body){
-        const obj = JSON.parse(body)
-        let res = this.orderService.makeOrderTable(obj.ids)
-        if(res == -1){
-            return "no"
-        }else if(res == 1){
-            return "yes"
-        }
+        Logger.log(body.ids)
+        this.orderService.makeOrderTable(body.ids)
+        return "Order sent!"
+        
     }
 
     @Post('/togo')
     makeToGoOrder(@Body() body){
         let res = this.orderService.makeOrderToGo(body.ids)
-        if(res == -1){
-            return "no"
-        }else if(res == 1){
-            return "yes"
+        return "Order sent!"
         }
     }
    
-}
