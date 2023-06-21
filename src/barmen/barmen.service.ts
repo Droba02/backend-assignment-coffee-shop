@@ -2,7 +2,6 @@ import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { MakeOrderEvent } from "./make-order.event";
 import { OnEvent } from "@nestjs/event-emitter";
-import { SendHandle } from "child_process";
 import { SendResponseEvent } from "./send-response.event";
 
 @Injectable()
