@@ -8,7 +8,9 @@ import { SendResponseEvent } from "./send-response.event";
 export class BarmenService {
 
     constructor(
-        @Inject('BARISTA') private barista: ClientProxy
+        @Inject('BARISTA1') private barista1: ClientProxy,
+        @Inject('BARISTA2') private barista2: ClientProxy,
+        @Inject('BARISTA3') private barista3: ClientProxy
     ) { }
 
     public orders = []
@@ -18,7 +20,7 @@ export class BarmenService {
     sendTableOrder(order: { amount: number, time: number, orderNumber: number }) {
 
         this.orders.push(order);
-        this.barista.emit('make-order', new MakeOrderEvent(this.orders[0]))
+        this.barista1.emit('make-order', new MakeOrderEvent(this.orders[0]))
     }
 
 
@@ -34,7 +36,7 @@ export class BarmenService {
     @OnEvent('next-order')
     sendNextOrder(){
         if(this.orders.length > 0){
-            this.barista.emit('make-order', new MakeOrderEvent(this.orders[0]))
+            this.barista1.emit('make-order', new MakeOrderEvent(this.orders[0]))
             Logger.log('Sending next order!')
         }else{
             Logger.log('All orders are complete!')
