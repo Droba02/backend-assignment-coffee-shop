@@ -11,7 +11,7 @@ export class BarmenController{
     constructor(private eventEmitter: EventEmitter2){}
     @EventPattern('successful-order')
     successfulOrder(data: SuccessfulOrderEvent){
-        Logger.log(`Barista finished the order number ${data.orderNumber}`)
+        this.eventEmitter.emit('next-order');
     }
         
     @EventPattern('send-response')

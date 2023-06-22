@@ -28,10 +28,16 @@ export class BarmenService {
             Logger.log('Barista recieved order!')
             this.orders.shift()
         }else{
-            Logger.log(`Barista is currently busy. Sending hem the order agai in ${this.orders[0].time} seconds`)
-            setTimeout(()=>{
-                this.barista.emit('make-order', new MakeOrderEvent(this.orders[0]))
-            }, this.orders[0].time*1000)
+            Logger.log(`Barista is currently busy.`)
+        }
+    }
+    @OnEvent('next-order')
+    sendNextOrder(){
+        if(this.orders.length > 0){
+            this.barista.emit('make-order', new MakeOrderEvent(this.orders[0]))
+            Logger.log('Sending next order!')
+        }else{
+            Logger.log('All orders are complete!')
         }
     }
 
